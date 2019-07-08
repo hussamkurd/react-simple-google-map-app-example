@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { inject } from "mobx-react";
-import {observe} from "mobx";
 import { Button, Row, Container, Card, ButtonToolbar } from "react-bootstrap";
 import MarkerControlModal from "./markerControlModalComponent";
-import markersStore from "../controllers/markersStoreController";
 
 class MarkerList extends Component {
   constructor(props, context) {
@@ -11,7 +9,11 @@ class MarkerList extends Component {
     let self = this;
     this.state = {
       showControlModal: false,
-      markerID: null
+      markerID: null,
+      passProps: {
+        globals: this.props.globals,
+        stores: this.props.stores
+      }
     };
     this.setModalState = this.setModalState.bind(this);
 
@@ -31,6 +33,7 @@ class MarkerList extends Component {
             showControlModal={this.state.showControlModal}
             markerID={this.state.markerID}
             setModalState={this.setModalState}
+            {...this.state.passProps}
           />
           <Button
             variant="primary"
@@ -45,7 +48,7 @@ class MarkerList extends Component {
         <hr />
         <Row>
           <div id="marker-list-div">
-            {this.props.markersStore.getAllMarkers().map(item => (
+            {this.props.markersStore.getAllMarkers().slice().map(item => (
               <Card className="marker-card mg5" key={"card" + item.id}>
                 <Card.Body>
                   <Card.Title>{item.title}</Card.Title>

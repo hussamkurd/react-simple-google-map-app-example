@@ -17,6 +17,10 @@
   z-index: 99;
   height: 500px;
 }
+.invalid{
+  color: red;
+  border-color: red;
+}
 .marker-card {
   width: 90%;
 }

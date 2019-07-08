@@ -8,18 +8,7 @@ class MarkersStoreController {
   **/
   constructor() {
     let self = this;
-    self.markers = [  {
-        id:1,
-        title:"51.343479, 12.387772",
-        lat:"51.343479",
-        long: "12.387772"
-      },
-      {
-          id:2,
-          title:"52.520008, 13.404954",
-          lat:"52.520008",
-          long: "13.404954"
-        }];
+    self.markers = [];
   }
 
   _setMarkerData(marker) {

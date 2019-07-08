@@ -11,6 +11,7 @@ Then run the project with
 
 ## Configuration
 set initial map configuration from `src/app/core/mapSettings.js`
+change the google API key to your key in `api_key`
 
 ## Test
 Run unit test for the app with

@@ -4,6 +4,8 @@ import "./App.css";
 import AppContainer from "./app/AppContainer";
 import markersStore from "./app/controllers/markersStoreController";
 import { Provider } from "mobx-react";
+import helperFunctions from "./app/helpers/functions";
+
 
 export default class App extends Component {
   constructor(props) {
@@ -11,7 +13,9 @@ export default class App extends Component {
 
     this.state = {
       passProps: {
-        globals: {},
+        globals: {
+          helperFunctions: helperFunctions
+        },
         stores: {}
       }
     };
