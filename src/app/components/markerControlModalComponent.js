@@ -4,7 +4,7 @@ import { Button, Row, Col, Form } from "react-bootstrap";
 import { inject } from "mobx-react";
 
 class MarkerControlModal extends Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.state = {
       long: "",
@@ -23,7 +23,7 @@ class MarkerControlModal extends Component {
       long: "",
       lat: "",
       title: "",
-      id: String(Math.floor(Math.random() * (10 - 1 + 1)) + 1),
+      id: new Date().getUTCMilliseconds(),
       updateState: false
     });
   }
@@ -45,7 +45,6 @@ class MarkerControlModal extends Component {
       lat: self.state.lat,
       title: self.state.title
     };
-
     if (!this.state.updateState) {
       this.props.markersStore.addMarker(marker);
     } else {

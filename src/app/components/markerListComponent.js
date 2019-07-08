@@ -1,17 +1,20 @@
 import React, { Component } from "react";
 import { inject } from "mobx-react";
-
+import {observe} from "mobx";
 import { Button, Row, Container, Card, ButtonToolbar } from "react-bootstrap";
 import MarkerControlModal from "./markerControlModalComponent";
+import markersStore from "../controllers/markersStoreController";
 
 class MarkerList extends Component {
   constructor(props, context) {
     super(props, context);
+    let self = this;
     this.state = {
       showControlModal: false,
       markerID: null
     };
     this.setModalState = this.setModalState.bind(this);
+
   }
   setModalState(state, id) {
     this.setState({
@@ -65,6 +68,7 @@ class MarkerList extends Component {
                       onClick={() => {
                         self.props.markersStore.deleteMarker(item.id);
                         self.setState({ showControlModal: false });
+
                       }}
                     >
                       Delete

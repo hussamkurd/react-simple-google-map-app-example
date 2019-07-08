@@ -1,6 +1,6 @@
 import {decorate, observable, action} from "mobx"
 
-export default class MarkersStoreController {
+class MarkersStoreController {
   markers = [];
 
   /**
@@ -8,7 +8,18 @@ export default class MarkersStoreController {
   **/
   constructor() {
     let self = this;
-    self.markers = [];
+    self.markers = [  {
+        id:1,
+        title:"51.343479, 12.387772",
+        lat:"51.343479",
+        long: "12.387772"
+      },
+      {
+          id:2,
+          title:"52.520008, 13.404954",
+          lat:"52.520008",
+          long: "13.404954"
+        }];
   }
 
   _setMarkerData(marker) {
@@ -58,3 +69,5 @@ decorate(MarkersStoreController, {
   deleteMarker: action
 
 })
+const markersStoreController = new MarkersStoreController()
+export default markersStoreController

@@ -3,10 +3,14 @@ module.exports = function(api) {
 
   const presets = ["@babel/preset-env", "@babel/preset-react"];
   const plugins = [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose" : true }],
+    "@babel/plugin-transform-regenerator",
     [
-      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-transform-runtime",
       {
-        loose: true
+        helpers: false,
+        regenerator: true
       }
     ]
   ];
