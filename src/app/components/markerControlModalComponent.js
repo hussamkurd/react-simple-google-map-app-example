@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Modal from "react-bootstrap/Modal";
-import { Button, Row, Col, Form } from "react-bootstrap";
+import { Button, Row, Col, Form, Spinner } from "react-bootstrap";
 import { inject } from "mobx-react";
 
 class MarkerControlModal extends Component {
   constructor(props) {
     super(props);
-    console.log(props)
+    console.log(props);
     this.state = this._getInitialStateOb();
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -23,6 +23,7 @@ class MarkerControlModal extends Component {
         title: ""
       },
       errors: {},
+      loading: false,
       passProps: {
         globals: this.props.globals,
         stores: this.props.stores
@@ -34,7 +35,7 @@ class MarkerControlModal extends Component {
   setIntitalState() {
     this.setState(this._getInitialStateOb());
   }
-
+  maskTheModal() {}
   handleValidationWithSubmition() {
     let fields = this.state.fields;
     let errors = {};
@@ -54,9 +55,29 @@ class MarkerControlModal extends Component {
       errors["long"] = "Wrong longitude value";
     }
     if (formIsValid) {
-      this.addEditMarker();
+      this.setState({ loading: true });
+      helpers
+        .validateCoordinates(
+          this.props.stores.settings.backend_coordinate_check_endpoint,
+          fields["lat"],
+          fields["long"]
+        )
+        .then(response => {
+          if(response){
+            this.addEditMarker();
+
+          }else{
+            errors["not_in_country"] = "the coordinates is out of germany"
+            this.setState({ errors: errors });
+          }
+          this.setState({ loading: false });
+        })
+        .catch(() => {
+          this.setState({ loading: false });
+        });
+    } else {
+      this.setState({ errors: errors });
     }
-    this.setState({ errors: errors });
   }
   handleClose() {
     this.props.setModalState(false, null);
@@ -104,6 +125,28 @@ class MarkerControlModal extends Component {
     fields[field] = e.target.value;
     this.setState({ fields });
   }
+  getActionBtn() {
+    if (this.state.loading) {
+      return (
+        <Button variant="primary" disabled>
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+          />
+          <span className="sr-only">Loading...</span>
+        </Button>
+      );
+    } else {
+      return (
+        <Button variant="primary" onClick={this.handleValidationWithSubmition}>
+          Save Changes
+        </Button>
+      );
+    }
+  }
 
   render() {
     return (
@@ -112,6 +155,8 @@ class MarkerControlModal extends Component {
           <Modal.Title>Set New Marker</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+
+
           <Form noValidate>
             <Form.Group controlId="markerTitle">
               <Form.Label>Marker Title</Form.Label>
@@ -124,6 +169,7 @@ class MarkerControlModal extends Component {
               />
               <span className="invalid">{this.state.errors["title"]}</span>
             </Form.Group>
+            <Form.Row><span className="invalid">{this.state.errors["not_in_country"]}</span></Form.Row>
 
             <Form.Row>
               <Form.Group as={Col} controlId="MarkerLatitude">
@@ -153,12 +199,7 @@ class MarkerControlModal extends Component {
           <Button variant="secondary" onClick={this.handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            onClick={this.handleValidationWithSubmition}
-          >
-            Save Changes
-          </Button>
+          {this.getActionBtn()}
         </Modal.Footer>
       </Modal>
     );

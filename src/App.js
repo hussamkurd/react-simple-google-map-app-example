@@ -5,6 +5,7 @@ import AppContainer from "./app/AppContainer";
 import markersStore from "./app/controllers/markersStoreController";
 import { Provider } from "mobx-react";
 import helperFunctions from "./app/helpers/functions";
+import settings from "./app/core/settings";
 
 
 export default class App extends Component {
@@ -16,7 +17,9 @@ export default class App extends Component {
         globals: {
           helperFunctions: helperFunctions
         },
-        stores: {}
+        stores: {
+          settings: settings
+        }
       }
     };
   }
